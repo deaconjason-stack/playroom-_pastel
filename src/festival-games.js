@@ -36,7 +36,7 @@
   $('festPause').onclick=()=>pause(!paused);$('festResume').onclick=()=>pause(false);
   api.listen(document,'visibilitychange',()=>{if(document.hidden)pause(true)});
   api.listen(document,'keydown',e=>{if(e.key==='Escape'&&started&&active){e.preventDefault();pause(!paused)}});
-  function frame(now){if(!active||current?.token!==token||current.done)return;dtFrame=Math.min(.033,Math.max(0,(now-last)/1000||0));last=now;if(started&&!paused){elapsed+=dtFrame;api.update(dtFrame,elapsed)}if(!active)return;api.draw(elapsed,paused?0:dtFrame);raf=requestAnimationFrame(frame)}
+  function frame(now){if(!active||current?.token!==token||current.done)return;const realDelta=Math.min(.25,Math.max(0,(now-last)/1000||0));dtFrame=Math.min(.033,realDelta);last=now;if(started&&!paused){elapsed+=realDelta;api.update(dtFrame,elapsed)}if(!active)return;api.draw(elapsed,paused?0:dtFrame);raf=requestAnimationFrame(frame)}
   raf=requestAnimationFrame(frame);
   stoppers.push(()=>{active=false;cancelAnimationFrame(raf);cleaners.forEach(fn=>fn());api.cleanup();if(musicFocus)document.dispatchEvent(new CustomEvent('playroom:music-focus',{detail:false}))});
   return api;

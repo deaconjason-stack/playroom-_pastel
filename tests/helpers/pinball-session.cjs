@@ -3,7 +3,7 @@ const vm = require('node:vm');
 const fs = require('node:fs');
 const path = require('node:path');
 const repo = path.resolve(__dirname, '../..');
-function simulate({holdFlippers=false, autoLaunch=true, seconds=8}={}) {
+function simulate({holdFlippers=false, autoLaunch=true, seconds=8, gameId='pocket-pinball', fps=60}={}) {
   let now=0, next=null, finished=null, minBallY=Infinity, ballFrames=0;
   const nodes=new Map(), events=new Map(), gradient={addColorStop(){}};
   const canvasContext=new Proxy({}, {
@@ -31,7 +31,7 @@ function simulate({holdFlippers=false, autoLaunch=true, seconds=8}={}) {
       addEventListener(name,fn){if(!events.has(name))events.set(name,[]);events.get(name).push(fn)},
       removeEventListener(){},dispatchEvent(){}},
     localStorage:{getItem(){return null}},CustomEvent:function(){},
-    current:{id:'pocket-pinball',token:'run',done:false}, games:[],runners:{},stoppers:[],
+    current:{id:gameId,token:'run',done:false}, games:[],runners:{},stoppers:[],
     performance:{now(){return now}},
     requestAnimationFrame(fn){next=fn;return 1},cancelAnimationFrame(){},score(){},
     finish(...args){finished=args;c.current.done=true}
@@ -39,13 +39,13 @@ function simulate({holdFlippers=false, autoLaunch=true, seconds=8}={}) {
   c.window.PlayroomFestival=require(path.join(repo,'src/festival-engine.js'));
   vm.createContext(c);
   vm.runInContext(fs.readFileSync(path.join(repo,'src/festival-games.js'),'utf8'),c);
-  c.window.PlayroomFestivalGames.install();c.runners['pocket-pinball']();
-  node('festStart').onclick();node('festLaunch').onclick();
+  c.window.PlayroomFestivalGames.install();c.runners[gameId]();
+  node('festStart').onclick();if(gameId==='pocket-pinball')node('festLaunch').onclick();
   if(holdFlippers)for(const fn of events.get('keydown')||[])
     for(const code of ['KeyA','KeyD'])fn({code,target:{},preventDefault(){}});
-  for(let i=0;i<seconds*60&&!finished;i++) {
-    if(autoLaunch)node('festLaunch').onclick();
-    now+=1000/60;const frame=next;next=null;if(frame)frame(now);
+  for(let i=0;i<seconds*fps&&!finished;i++) {
+    if(autoLaunch&&gameId==='pocket-pinball')node('festLaunch').onclick();
+    now+=1000/fps;const frame=next;next=null;if(frame)frame(now);
   }
   return {holdFlippers,autoLaunch,secondsRun:now/1000,minBallY,ballFrames,finished,hud:node('festHud').innerHTML};
 }
