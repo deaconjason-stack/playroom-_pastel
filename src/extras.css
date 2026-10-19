@@ -1,0 +1,24 @@
+
+.audioDock{position:fixed;bottom:15px;right:14px;z-index:45;display:flex;align-items:center;gap:7px;padding:9px;background:#fffdfaf5;border:1px solid #e5d9ed;border-radius:21px;box-shadow:0 8px 28px #63438225;backdrop-filter:blur(12px)}
+.audioDock button{border:1px solid #dbcfec;background:var(--lav);border-radius:13px;padding:9px 11px;color:var(--ink);font-weight:850;font-size:.82rem;cursor:pointer}
+.audioDock button[aria-pressed=true]{background:var(--mint)}
+.audioDock input{width:62px;accent-color:var(--accent)}
+.audioDock label{font-size:.75rem;font-weight:750;color:var(--muted)}
+#toast{bottom:88px}
+.funGrid{display:grid;justify-content:center;gap:6px;margin:18px auto}
+.fourGrid{grid-template-columns:repeat(7,minmax(30px,58px));width:max-content;max-width:100%;padding:10px;background:#cbbcea;border-radius:19px}
+.fourGrid button{width:clamp(30px,7.3vw,57px);aspect-ratio:1;border:2px solid #fff9;background:white;border-radius:50%;cursor:pointer;font-size:0}
+.fourGrid .pink{background:#ffa9c7}.fourGrid .gold{background:#ffe1a1}
+.popField{position:relative;min-height:275px;max-width:570px;margin:15px auto;border-radius:23px;background:linear-gradient(130deg,var(--mint),var(--lav));overflow:hidden}
+.popField button{position:absolute;display:grid;place-items:center;border:2px solid #fff9;border-radius:50%;background:radial-gradient(circle at 30% 20%,white,#f7bee4 43%,#c6b6f3);box-shadow:0 4px 12px #7759a42b;font-size:1.2rem}
+.simonGrid{display:grid;grid-template-columns:repeat(2,123px);gap:13px;justify-content:center;margin:20px auto}
+.simonGrid button{aspect-ratio:1;border:4px solid white;border-radius:23px;box-shadow:0 4px 18px #0002}
+.simonGrid button:nth-child(1){background:#ffb8d2}.simonGrid button:nth-child(2){background:#c1d7ff}.simonGrid button:nth-child(3){background:#c2efd6}.simonGrid button:nth-child(4){background:#ffe4a8}
+.simonGrid .flash{outline:4px solid var(--accent);filter:brightness(1.18) saturate(1.4)}
+.wordLetters{background:var(--lav);border-radius:18px;padding:17px;letter-spacing:.17em;font-size:1.8rem;font-weight:900;max-width:470px;margin:17px auto}
+.wordForm{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:10px}
+.wordForm input{width:min(280px,100%);padding:13px;border:2px solid #e5daeb;border-radius:15px;background:#fff;color:#302d39}
+.rpsButtons{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin:20px auto}
+.rpsButtons button{border:2px solid #ddd0ee;border-radius:19px;background:var(--lav);font-size:2.5rem;padding:16px;min-width:102px}
+.funHint{font-size:.92rem;color:var(--muted);margin:14px auto}
+@media(max-width:570px){.audioDock{bottom:7px;left:7px;right:7px;justify-content:center;padding:7px}.audioDock button{flex:1;padding:10px 5px;font-size:.76rem}.audioDock input{width:47px}.simonGrid{grid-template-columns:repeat(2,104px)}#toast{bottom:85px}.rpsButtons button{min-width:84px;padding:11px}.wordLetters{font-size:1.35rem}}

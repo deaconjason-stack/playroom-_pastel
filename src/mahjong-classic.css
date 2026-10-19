@@ -1,0 +1,134 @@
+/* Classic turtle Mahjong, layered blocking and legible touch-friendly tiles */
+.mahjongGame{--mjTile:#fbf8ed;color:var(--ink);max-width:100%;}
+.mahjongIntro{font-size:.92rem;line-height:1.55;background:var(--mint);border-radius:17px;padding:14px 17px;text-align:left;margin:8px 0 15px;color:var(--ink)}
+.mahjongInfo{display:flex;justify-content:center;gap:9px;flex-wrap:wrap;font-weight:850;font-size:.8rem}
+.mahjongInfo span{padding:7px 12px;border-radius:30px;background:var(--lav)}
+.mahjongToolbar{display:flex;gap:9px;flex-wrap:wrap;justify-content:center;margin:16px auto}
+.mahjongToolbar button{border:1px solid #d8caeb;background:white;color:var(--ink);font-size:.85rem;font-weight:800;border-radius:23px;padding:9px 15px}
+.mahjongToolbar button:disabled{opacity:.5;cursor:not-allowed}
+.mahjongToolbar button:hover:not(:disabled){background:var(--pink)}
+.mahjongScroll{max-width:100%;overflow-x:auto;overscroll-behavior-x:contain;background:radial-gradient(ellipse at top,#f8edfc,#e4f6ee);padding:0;border:2px solid #dfd1e8;border-radius:23px;box-shadow:inset 0 2px 12px #a4a0ac24;touch-action:pan-x pan-y;scrollbar-width:thin}
+.mahjongTurtle{width:748px;height:625px;position:relative;margin:0 auto;transform:translateZ(0);}
+.mahjongTurtle .mjTile{position:absolute;width:49px;height:61px;border-radius:8px;border:2px solid #c6c3bc;background:linear-gradient(135deg,#ffffff,#fcfaf2);box-shadow:2px 4px 0 #9bbec3,4px 6px 3px #7e738c66;display:flex;justify-content:center;align-items:center;padding:0;cursor:pointer;transition:filter .12s,transform .12s;touch-action:manipulation;user-select:none;-webkit-tap-highlight-color:transparent}
+.mahjongTurtle .mjFace{font-family:'Segoe UI Symbol','Noto Sans Symbols 2','Apple Color Emoji',sans-serif;font-size:35px;line-height:1;filter:saturate(.83)}
+.mahjongTurtle .mjTile.mjLevel1{box-shadow:3px 5px 0 #9bbec3,5px 8px 6px #75698977}
+.mahjongTurtle .mjTile.mjLevel2{box-shadow:3px 6px 0 #94b5bc,6px 10px 7px #665e8177}
+.mahjongTurtle .mjTile.mjLevel3{box-shadow:4px 7px 0 #7eabb5,6px 12px 9px #60577788}
+.mahjongTurtle .mjTile.mjLocked{filter:brightness(.81) saturate(.75);cursor:not-allowed;opacity:1}
+.mahjongTurtle .mjTile.mjFree:hover,.mahjongTurtle .mjTile.mjFree:focus-visible{filter:brightness(1.08);transform:translateY(-2px);border-color:#a17dc6}
+.mahjongTurtle .mjTile.mjSelected{border:3px solid #bc70d4;background:#ffe9fa;transform:translateY(-3px);outline:2px solid #dbaddb;outline-offset:1px}
+.mahjongTurtle .mjTile.mjHint{border:3px solid #29a87d;background:#d6fff2;outline:3px solid #59dbae;outline-offset:1px}
+.mahjongMessage{font-size:.91rem;color:var(--accent);font-weight:850;min-height:1.5em;margin:15px auto 7px;text-wrap:balance}
+.mahjongLegend{font-size:.77rem;color:var(--muted);margin:10px auto;line-height:1.8}
+@media(max-width:650px){.mahjongIntro{font-size:.8rem}.mahjongScroll{border-radius:14px}.mahjongToolbar button{font-size:.78rem;padding:10px 12px}.mahjongInfo{font-size:.74rem}}
+@media(prefers-reduced-motion:reduce){.mahjongTurtle .mjTile{transition:none}}
+
+
+/* Playroom pastel Mahjong tile set — uses real mjTile/mjFace class names.
+   Suit tints complement the site's selected pastel theme while preserving
+   tile identity, depth, blocked/free behavior, hints, and accessible focus. */
+.mahjongTurtle .mjTile {
+  --mjSuitSurface:#fff9fd;
+  --mjSuitShade:#f4eefa;
+  --mjSuitEdge:#e7d8ee;
+  --mjSuitInk:#755d8f;
+  --mjSuitRim:#d7c5e3;
+  background:linear-gradient(143deg,#ffffff 4%,var(--mjSuitSurface) 56%,var(--mjSuitShade));
+  border-color:var(--mjSuitEdge);
+  box-shadow:2px 4px 0 var(--mjSuitRim),4px 7px 4px #7e738c33;
+}
+.mahjongTurtle .mjTile.mjSuitCharacters {
+  --mjSuitSurface:#fff0f7;
+  --mjSuitShade:#ffe2ef;
+  --mjSuitEdge:#efacd0;
+  --mjSuitInk:#a6497c;
+  --mjSuitRim:#dcaccb;
+}
+.mahjongTurtle .mjTile.mjSuitBamboo {
+  --mjSuitSurface:#effff6;
+  --mjSuitShade:#d7f8e8;
+  --mjSuitEdge:#9edcbe;
+  --mjSuitInk:#287a60;
+  --mjSuitRim:#a7d8c1;
+}
+.mahjongTurtle .mjTile.mjSuitDots {
+  --mjSuitSurface:#f4efff;
+  --mjSuitShade:#e7ddff;
+  --mjSuitEdge:#c4b1ed;
+  --mjSuitInk:#7554b0;
+  --mjSuitRim:#bba8de;
+}
+.mahjongTurtle .mjTile.mjSuitWind {
+  --mjSuitSurface:#eff8ff;
+  --mjSuitShade:#dcedff;
+  --mjSuitEdge:#afd4f3;
+  --mjSuitInk:#326d9c;
+  --mjSuitRim:#accde8;
+}
+.mahjongTurtle .mjTile.mjSuitDragon {
+  --mjSuitSurface:#fff4ec;
+  --mjSuitShade:#ffe2d1;
+  --mjSuitEdge:#f4bda9;
+  --mjSuitInk:#ab614a;
+  --mjSuitRim:#e9b69e;
+}
+.mahjongTurtle .mjTile.mjSuitFlower {
+  --mjSuitSurface:#fff0fb;
+  --mjSuitShade:#fbe0f5;
+  --mjSuitEdge:#e9aedc;
+  --mjSuitInk:#a14e90;
+  --mjSuitRim:#daa9d3;
+}
+.mahjongTurtle .mjTile.mjSuitSeason {
+  --mjSuitSurface:#fffbec;
+  --mjSuitShade:#fff0c9;
+  --mjSuitEdge:#ead49a;
+  --mjSuitInk:#926d27;
+  --mjSuitRim:#decb9f;
+}
+.mahjongTurtle .mjTile .mjFace {
+  color:var(--mjSuitInk);
+  /* text variation selector ensures pastel CSS recolors the glyph where a
+     monochrome Mahjong font is available, rather than full-color emoji. */
+  font-family:'Segoe UI Symbol','Noto Sans Symbols 2','Noto Sans Symbols','DejaVu Sans',sans-serif;
+  filter:none;
+  text-shadow:0 1px 0 #ffffffb9;
+}
+.mahjongTurtle .mjTile.mjLevel1,
+.mahjongTurtle .mjTile.mjLevel2,
+.mahjongTurtle .mjTile.mjLevel3 {
+  box-shadow:3px 5px 0 var(--mjSuitRim),6px 9px 6px #63518045;
+}
+.mahjongTurtle .mjTile.mjLocked {
+  filter:saturate(.68) brightness(.94);
+  cursor:not-allowed;
+  opacity:.84;
+}
+.mahjongTurtle .mjTile.mjFree:hover,
+.mahjongTurtle .mjTile.mjFree:focus-visible {
+  filter:saturate(1.18) brightness(1.03);
+  border-color:var(--accent);
+  outline:2px solid var(--accent);
+  outline-offset:1px;
+}
+.mahjongTurtle .mjTile.mjSelected {
+  background:linear-gradient(135deg,#fff,#efddff);
+  border:3px solid #ac7ddb;
+  outline:2px solid #d7b4fa;
+  outline-offset:1px;
+  filter:none;
+  box-shadow:0 0 0 4px #d8b8f87a,4px 7px 7px #aa85d24a;
+}
+.mahjongTurtle .mjTile.mjHint {
+  background:linear-gradient(135deg,#fff,#d9faeb);
+  border:3px solid #42ae8b;
+  outline:3px solid #94e8c4;
+  outline-offset:1px;
+  filter:none;
+  box-shadow:0 0 0 4px #86dcbc7d,4px 7px 8px #69ad9782;
+}
+@media (prefers-contrast:more) {
+  .mahjongTurtle .mjTile {border-width:3px}
+  .mahjongTurtle .mjTile .mjFace {text-shadow:none;filter:contrast(1.15)}
+  .mahjongTurtle .mjTile.mjLocked {opacity:.9}
+}
