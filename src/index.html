@@ -22,7 +22,7 @@
 @media(prefers-reduced-motion:reduce){.passportMeter div{transition:none}}
 .gameCard[hidden]{display:none!important}
 .playSection:has(.worldCanvas),.playSection:has(.checkersBoard),.playSection:has(.dominoTable),.playSection:has(.treasureGrid){padding-bottom:145px}
-</style></head>
+</style><link rel="stylesheet" href="/festival.css"></head>
 <body><header class="top"><a class="logo" href="#top">playroom<span>✦</span></a><nav><a href="#games">Games</a><a href="#rewards">My rewards</a></nav><a class="wallet" href="#rewards" aria-label="Your play points"><span>✦</span> <strong id="headCoins">0</strong> points</a></header>
 <main id="top"><section class="hero wrap"><div class="heroCopy"><div class="eyebrow">✷ YOUR LITTLE HAPPY PLACE ✷</div><h1>Small games.<br><em>Big joy.</em></h1><p>Twenty-five cheerful games, dreamy pastel colors, rewards, and upbeat music you control. No downloads, no sign-ups. Just fun!</p><a href="#games" class="primary">Pick a game <span>↗</span></a><div class="heroNote">🌷 Free to play <span>•</span> 🎁 Collect badges <span>•</span> 🎵 Optional sound <span>•</span> 📱 Phone friendly</div></div><div class="heroArt" aria-hidden="true"><div class="artCircle"><span class="artStar a1">✿</span><span class="artStar a2">✧</span><div class="smile">☺</div><span class="artStar a3">✳</span></div><div class="floating tag1">✨ +15 play points</div><div class="floating tag2">🏅 badge unlocked!</div></div></section>
 <section class="stats wrap"><div class="stat"><span>✦ Play points</span><strong id="coins">0</strong></div><div class="stat"><span>🌈 Your level</span><strong id="level">1</strong></div><div class="stat"><span>🎮 Rounds played</span><strong id="rounds">0</strong></div><div class="stat"><span>🌻 Day streak</span><strong id="streak">0</strong></div></section>
@@ -313,4 +313,4 @@ function treasureQuest(){const ID='treasure-quest',N=8;let walls=new Set(['1,1',
 Object.assign(runners,{'mini-golf':miniGolf,'hoop-shot':hoopShot,'space-defender':starDefender,'brick-bounce':brickBounce,'checkers':checkers,'dominoes':dominoes,'treasure-quest':treasureQuest});
 })();
 
-});</script></body></html>
+});</script><script src="/festival-engine.js"></script><script src="/festival-games.js"></script><script src="/festival.js"></script></body></html>

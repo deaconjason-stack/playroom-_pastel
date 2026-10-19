@@ -6,6 +6,7 @@ const dock=document.createElement("div");dock.className="audioDock";dock.setAttr
 dock.innerHTML='<button id="musicToggle" type="button" aria-pressed="false">🎵 Music: Off</button><button id="fxToggle" type="button" aria-pressed="false">🔕 FX: Off</button><label for="audioVol">Volume</label><input id="audioVol" type="range" min="0" max="100" value="40" aria-label="Audio volume">';
 document.body.appendChild(dock);
 let ctx=null,music=false,fx=false,vol=.4,timer=null,beatIndex=0,lastTap=0;
+let musicFocus=false;document.addEventListener("playroom:music-focus",e=>{musicFocus=!!e.detail;if(musicFocus)pause();else play()});
 const SoundContext=window.AudioContext||window.webkitAudioContext;
 function awake(){if(!SoundContext){if(typeof notice==="function")notice("Audio is not available in this browser");return false}if(!ctx)ctx=new SoundContext();if(ctx.state==="suspended")ctx.resume().catch(()=>{});return true}
 function tone(freq,duration=.16,volume=.05,type="sine",offset=0){if(!ctx||ctx.state==="closed")return;const t=ctx.currentTime+offset,o=ctx.createOscillator(),g=ctx.createGain();o.type=type;o.frequency.setValueAtTime(freq,t);g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(vol*volume,t+.012);g.gain.exponentialRampToValueAtTime(.001,t+duration);o.connect(g);g.connect(ctx.destination);o.start(t);o.stop(t+duration+.03)}
@@ -13,16 +14,16 @@ function sound(name="tap"){if(!fx||document.hidden||!awake())return;const now=Da
 const melody=[523,659,784,659,587,698,880,698,659,784,988,784,587,698,784,523];
 function tick(){if(!music||document.hidden||!ctx)return;const i=beatIndex++%melody.length;tone(melody[i],.18,.034,"triangle");if(i%4===0)tone([262,294,330,262][i/4],.36,.018,"sine")}
 function pause(){if(timer!==null){clearInterval(timer);timer=null}}
-function play(){pause();if(music&&!document.hidden&&awake()){tick();timer=setInterval(tick,260)}}
+function play(){pause();if(music&&!musicFocus&&!document.hidden&&awake()){tick();timer=setInterval(tick,260)}}
 $("musicToggle").onclick=()=>{music=!music;$("musicToggle").setAttribute("aria-pressed",String(music));$("musicToggle").textContent=music?"🎶 Music: On":"🎵 Music: Off";if(music)play();else pause()};
 $("fxToggle").onclick=()=>{fx=!fx;$("fxToggle").setAttribute("aria-pressed",String(fx));$("fxToggle").textContent=fx?"🔔 FX: On":"🔕 FX: Off";if(fx){awake();sound("pop")}};
 $("audioVol").oninput=e=>vol=Number(e.target.value)/100;
 document.addEventListener("visibilitychange",()=>{if(document.hidden)pause();else if(music)play()});window.addEventListener("pagehide",pause);
-const baseFinish=finish;finish=function(id,won,n,label){const first=typeof current!=="undefined"&&current?.id===id&&!current.done;const out=baseFinish(id,won,n,label);if(first)sound(won?"win":"finish");return out};
+const baseFinish=finish;finish=function(id,won,n,label,meta){const first=typeof current!=="undefined"&&current?.id===id&&!current.done;const out=baseFinish(id,won,n,label,meta);if(first)sound(won?"win":"finish");return out};
 $("stage").addEventListener("click",e=>{if(e.isTrusted&&e.target.closest("button"))sound("tap")});
 const extras=[["connect-four","🔴","Connect Four","Line up four colored discs."],["bubble-pop","🫧","Bubble Pop","Pop bubbles against the clock."],["simon-says","🎵","Simon Says","Copy the colorful memory sequence."],["word-scramble","🔤","Word Scramble","Unscramble five happy words."],["rock-paper-scissors","✊","Rock–Paper–Scissors","Five rounds of hand-game fun."]];
 extras.forEach(g=>{if(!games.some(x=>x[0]===g[0]))games.push(g);const i=games.findIndex(x=>x[0]===g[0]),c=document.createElement("article");c.className="gameCard";c.innerHTML='<div class="gameIcon">'+g[1]+'</div><h3>'+g[2]+'</h3><p>'+g[3]+'</p><div class="cardBottom"><span>🏅 Best <strong id="cardbest'+i+'">0</strong></span><button class="smallBtn">Play ↗</button></div>';$("cards").appendChild(c);c.querySelector("button").onclick=()=>open(g[0]);c.querySelector("strong").textContent=(typeof bests!=="undefined"&&bests[g[0]])||0});
-$("gameCount").textContent=games.length+" games • all free";
+const collectionCount=$("gameCount")||document.querySelector("#games .count");if(collectionCount)collectionCount.textContent=games.length+" games • all free";
 const active=id=>typeof current!=="undefined"&&current?.id===id&&!current.done;
 function later(fn,ms){const t=setTimeout(()=>{if(current&&!current.done)fn()},ms);stoppers.push(()=>clearTimeout(t))}
 runners["connect-four"]=()=>{
