@@ -49,7 +49,7 @@
   const c=g.c,held=new Set(),sparks=[],bumpers=[{x:134,y:174,r:29,color:P.pink,last:-10},{x:286,y:174,r:29,color:P.mint,last:-10},{x:210,y:276,r:35,color:P.lilac,last:-10}];let ball=null,balls=3,points=0,multi=1,lit=new Set(),cooldown=0,flash=0,trail=[];
   g.hint('Skill stars: finish a round ★ · score 1,500 ★★ · score 4,000 ★★★.');
   function hud(){g.hud('<span>🎯 '+points.toLocaleString()+'</span><span>● '+balls+' balls</span><span>✦ '+multi+'× multiplier</span>');score(points)}
-  function launch(){if(!g.playing||ball||cooldown>0)return;ball={x:374,y:520,vx:-74-Math.random()*18,vy:-710,r:10};tone(440,.2,'triangle');$('festLaunch').disabled=true;trail=[]}
+  function launch(){if(!g.playing||ball||cooldown>0)return;ball={x:374,y:350,vx:-74-Math.random()*18,vy:-710,r:10};tone(440,.2,'triangle');$('festLaunch').disabled=true;trail=[]}
   keyControls(g,held,['ArrowLeft','ArrowRight','KeyA','KeyD','Space']);heldButton(g,'festLeft',held,'KeyA');heldButton(g,'festRight',held,'KeyD');$('festLaunch').onclick=launch;
   g.listen(document,'keydown',e=>{if(e.code==='Space'&&g.playing){e.preventDefault();launch()}});
   g.onStart=()=>{hud();$('festLaunch').disabled=false};
